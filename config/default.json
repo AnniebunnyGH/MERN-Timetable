@@ -1,0 +1,5 @@
+{
+  "port": 5000,
+  "jwtSecret": "AnnieBunny mern",
+  "mongoURI": "mongodb+srv://AnnnieBunny:kost8546@cluster0.fvn8w.mongodb.net/<dbname>?retryWrites=true&w=majority"
+}
