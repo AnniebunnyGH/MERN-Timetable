@@ -7,13 +7,11 @@ const app = express();
 app.use(express.json({ extended: true }))
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/user',require('./routes/user'))
-
+app.use('/api/creater', require('./routes/creater'))
 
 app.use('/api/timetable', require('./routes/timetable'))
-app.use('/api/events', require('./routes/events'))
-app.use('/api/groups', require('./routes/groups'))
 
-app.use('/api/creater', require('./routes/creater'))
+
 
 const PORT = config.get('port') || 3000
 

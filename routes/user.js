@@ -11,7 +11,7 @@ router.get('/getData', async (req, res) => {
     try {
         const user = await checkTokin(req);
         const userData = {
-            userInfo: {fname:user.fname,sname:user.sname,rights:user.rights},
+            userInfo: {fname:user.fname, sname:user.sname, rights:user.rights},
             userGroups : {
                 created: [],
                 joined: [],

@@ -6,7 +6,7 @@ const schema = new Schema({
   fname: { type: String, },
   sname: { type: String, },
   rights: { type: String, },
-  groups: [],
+  groups: {type:Array},
 })
 
 module.exports = model('User', schema)

@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/Auth.context';
+import {CreaterContext} from '../context/Creater.context';
 import { useHttp } from '../hooks/http.hook';
 import { Button, Card, CardContent, CardHeader, TextField } from "@material-ui/core/";
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,6 +20,7 @@ export default function CreateGroupCard() {
   const { loading, request, error, clearError } = useHttp();
   const classes = useStyles();
   const { token } = useContext(AuthContext);
+  const {users, groups,setCreaterMode} = useContext(CreaterContext);
 
   const [groupForm, setGroupForm] = useState({
     groupName: '',
@@ -28,23 +30,10 @@ export default function CreateGroupCard() {
   })
   const [groupMembers, setGroupMembers] = useState([])
   const [importedGroups, setImportedGroups] = useState([]);
-  const [creatorData, setCreatorData] = useState({ users: [], groups: [] });
 
-  useEffect(() => {
-    async function getCreatorData() {
-      try {
-        const data = await request('/api/creater/getData', 'GET',
-          null,
-          { 'Authorization': 'Basic' + ' ' + token, });
-        console.log(data);
-        setCreatorData(data);
-      } catch (e) {
-
-      }
-    }
-    getCreatorData();
-  }, [])
-
+  useEffect(()=>{
+    setCreaterMode(true);
+  },[])
 
   const changeHandler = event => {
     setGroupForm({ ...groupForm, [event.target.name]: event.target.value })
@@ -87,7 +76,7 @@ export default function CreateGroupCard() {
             multiple
             id="groupMembers"
             value={groupMembers}
-            options={creatorData.users}
+            options={users}
             getOptionLabel={(option) => option.sname + ' ' + option.fname}
             onChange={(event, newValue) => setGroupMembers(newValue)}
             renderInput={(params) => <TextField {...params} label="Members"
@@ -97,7 +86,7 @@ export default function CreateGroupCard() {
             multiple
             id="importedGroups"
             value={importedGroups}
-            options={creatorData.groups}
+            options={groups}
             getOptionLabel={(option) => option.name + ' ' + option.tag}
             onChange={(event, newValue) => setImportedGroups(newValue)}
             renderInput={(params) => <TextField {...params} label="Import members from... "

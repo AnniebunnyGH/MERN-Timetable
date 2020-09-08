@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/Auth.context';
+import { CreaterContext } from '../context/Creater.context';
 import { useHttp } from '../hooks/http.hook';
 import { Button, Card, CardContent, CardHeader, TextField } from "@material-ui/core/";
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
   },
   nameLine: {
     display: 'flex',
-
   }
 }));
 
@@ -22,6 +22,7 @@ export default function CreateEventCard() {
   const classes = useStyles();
 
   const { token } = useContext(AuthContext);
+  const {users, groups,isCreater,setCreaterMode} = useContext(CreaterContext);
 
   const [eventForm, setEventForm] = useState({
     eventName: '',
@@ -30,20 +31,13 @@ export default function CreateEventCard() {
     eventGroups: '',
   })
   const [eventDate, setEventDate] = useState(new Date());
-  const [eventHost, setEventHost] = useState('');
+  const [eventHost, setEventHost] = useState();
   const [eventGroups, setEventGroups] = useState([]);
 
 
-  const leadList = [
-    'R Y',
-    'A B',
-  ];
-  const groupList = [
-    { tag: 'c1', name: 'afsaf' },
-    { tag: 'c2', name: 'asdasd' },
-    { tag: 'c3', name: 'asdasdasds' },
-  ];
-
+  useEffect(()=>{
+    setCreaterMode(true);
+  },[])
 
   const changeHandler = event => {
     setEventForm({ ...eventForm, [event.target.name]: event.target.value })
@@ -58,7 +52,6 @@ export default function CreateEventCard() {
 
     }
   };
-
 
   return (
     <Card className={classes.root}>
@@ -104,10 +97,14 @@ export default function CreateEventCard() {
               required />
           </div>
 
+
+
+
           <Autocomplete
             id="eventHost"
             value={eventHost}
-            options={leadList}
+            options={users}
+            getOptionLabel={(option) => option.sname + ' ' + option.fname}
             onChange={(event, newValue) => setEventHost(newValue)}
             freeSolo={true}
             renderInput={(params) => <TextField {...params} label="Lead"
@@ -117,7 +114,7 @@ export default function CreateEventCard() {
             multiple
             id="eventGroups"
             value={eventGroups}
-            options={groupList}
+            options={groups}
             getOptionLabel={(option) => option.tag + ' ' + option.name}
             onChange={(event, newValue) => setEventGroups(newValue)}
             renderInput={(params) => <TextField {...params} label="Groups"

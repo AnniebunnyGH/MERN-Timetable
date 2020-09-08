@@ -7,7 +7,7 @@ const schema = new Schema({
   duration: { type: String, required: true, },
   host: { type: String },
   groups: [],
-  creator: { type: String },
+  creater: { type: String },
 })
 
 module.exports = model('Event', schema)

@@ -46,7 +46,7 @@ export default function AuthCard() {
     fname: '',
     sname: '',
     rights: 's',
-    groups: ['c1']
+    groups: []
   })
   const changeHandler = event => {
     if (authForm.hasOwnProperty(event.target.name)) {
