@@ -6,6 +6,8 @@ const app = express();
 
 app.use(express.json({ extended: true }))
 app.use('/api/auth', require('./routes/auth'))
+app.use('/api/user',require('./routes/user'))
+
 
 app.use('/api/timetable', require('./routes/timetable'))
 app.use('/api/events', require('./routes/events'))

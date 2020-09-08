@@ -88,42 +88,4 @@ router.post(
     }
   })
 
-//api/auth/tokin
-router.get(
-  '/tokin',
-  async (req, res) => {
-    try {
-      if (req.headers.authorization &&
-        req.headers.authorization.split(' ')[0].includes('Basic')) {
-        const token = req.headers.authorization.split(' ')[1];
-
-        try {
-          const decoded = jwt.verify(token, config.get('jwtSecret'), { maxAge: '1h' })
-          console.log('userId: ' + decoded.userId)
-
-          const user = await User.findOne({ '_id': decoded.userId })
-          if (!user) {
-            return res.status(400).json({ message: 'Пользователь не найден' })
-          }
-
-          res.json({ 'fname': user.fname, 'sname': user.sname, 'rights': user.rights });
-          console.log(user)
-        }
-        catch (e) {
-          return res.status(400).json({ message: 'Не очень рабочий токен' })
-        }
-      } else {
-        return res.status(400).json({ message: 'Нет токена' })
-      }
-    } catch (e) {
-      console.log('Registr error: ' + e);
-      return res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
-
-    }
-  }
-
-
-)
-
-
 module.exports = router

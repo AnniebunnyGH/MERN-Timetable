@@ -17,24 +17,5 @@ router.post('/create', async (req, res) => {
   }
 })
 
-router.get('/getGroups', async (req, res) => {
-  try {
-    const user = await checkTokin(req);
-    const userGroups = {
-      created: [],
-      joined: [],
-    }
-    userGroups.created = await Group.find({ creator: user._id });
-    for (let i = 0; i < user.groups.length; i += 1) {
-      const joinedGroups = await Group.findOne({ tag: user.groups[i] })
-      userGroups.joined = userGroups.joined.concat(joinedGroups)
-    }
-
-    res.json(userGroups);
-
-  } catch (e) {
-
-  }
-})
 
 module.exports = router

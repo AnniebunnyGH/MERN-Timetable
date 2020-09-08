@@ -51,7 +51,7 @@ export default function CreateEventCard() {
 
   const createEventHandler = async () => {
     try {
-      const data = await request('/api/events/create', 'POST',
+      const data = await request('/api/creater/createEvent', 'POST',
         { ...eventForm, eventDate, eventHost, eventGroups: eventGroups.map((elem) => elem.tag) },
         { 'Authorization': 'Basic' + ' ' + token, })
     } catch (e) {

@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AuthContext } from '../context/Auth.context';
 import EventCard from './EventCard';
 
-
 const useStyles = makeStyles((theme) => ({
 
 }))
@@ -17,7 +16,7 @@ export default function ScheduleCard(date1) {
   */
   const date = '2020-09-04';
 
-  const dayEvents = auth.userEvents.filter((elem) => elem.date.includes(date))
+  const dayEvents = auth.userData.userEvents.filter((elem) => elem.date.includes(date))
   const dayEventComponents = dayEvents.map((event, index) => <EventCard event={event} key={index}></EventCard>)
 
   console.log(dayEvents);

@@ -52,9 +52,12 @@ export default function CreateGroupCard() {
 
   const createGroupHandler = async () => {
     try {
-      const data = await request('/api/groups/create', 'POST',
-        { name: groupForm.groupName, tag: groupForm.groupTag, },
-        { 'Authorization': 'Basic' + ' ' + token, members: groupMembers, importedGroups })
+      const data = await request('/api/creater/createGroup', 'POST',
+        { name: groupForm.groupName,
+          tag: groupForm.groupTag,
+          members: groupMembers.map((elem)=>elem._id),
+          importedGroups: importedGroups.map((elem)=>elem.tag) },
+        { 'Authorization': 'Basic' + ' ' + token })
     } catch (e) {
 
     }
