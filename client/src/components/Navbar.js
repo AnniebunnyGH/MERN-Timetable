@@ -1,8 +1,15 @@
-import React, { useContext } from 'react'
-import { NavLink, useHistory } from 'react-router-dom'
-import { AuthContext } from '../context/Auth.context'
-import { AppBar, Toolbar, Typography, Button, BottomNavigation } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import { NavLink, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  BottomNavigation,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { logout } from "../redux/actions/auth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,31 +24,39 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Navbar = () => {
-  const auth = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
   const history = useHistory();
   const classes = useStyles();
 
-  const logoutHandler = event => {
+  const logoutHandler = (event) => {
     event.preventDefault();
-    auth.logout();
-    history.push('/');
-  }
+    dispatch(logout());
+    history.push("/");
+  };
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h4" className={classes.title} >Timetable</Typography>
-          {auth.isAuth &&
+          <Typography variant="h4" className={classes.title}>
+            Timetable
+          </Typography>
+          {auth.isAuth && (
             <div>
-              <Button color="inherit" component={NavLink} to="/timetable">Timetable</Button>
-              <Button color="inherit" component={NavLink} to='/groups'>Groups</Button>
-              <Button color="inherit" onClick={logoutHandler}>Logout</Button>
+              <Button color="inherit" component={NavLink} to="/timetable">
+                Timetable
+              </Button>
+              <Button color="inherit" component={NavLink} to="/groups">
+                Groups
+              </Button>
+              <Button color="inherit" onClick={logoutHandler}>
+                Logout
+              </Button>
             </div>
-          }
+          )}
         </Toolbar>
       </AppBar>
-
-
-    </div>)
-}
+    </div>
+  );
+};

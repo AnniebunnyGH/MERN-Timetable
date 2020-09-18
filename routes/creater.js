@@ -45,7 +45,7 @@ router.post('/createGroup', async (req, res) => {
       await user.save();
     }
 
-    res.json('Группа создана')
+    res.json({message:'Группа создана',data:group})
   } catch (e) {
 
   }
