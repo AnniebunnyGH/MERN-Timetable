@@ -1,6 +1,6 @@
 export const userData = {
   userInfo: { fname: "", sname: "", rights: "", groups: [] },
-  userGroups: [],
+  userGroups: {created:[],joined:[]},
   userEvents: [],
 };
 

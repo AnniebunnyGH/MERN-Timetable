@@ -9,7 +9,8 @@ import {
 } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 import { Autocomplete } from "@material-ui/lab";
-import { fetchCreateGroup } from "../redux/actions/creater";
+import { addGroup } from "../redux/actions/creater";
+import { useHttp } from "../hooks/http.hook";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +25,7 @@ const CreateGroupCard = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const creater = useSelector((state) => state.creater);
+  const { loading, request, error, clearError } = useHttp();
   const [groupForm, setGroupForm] = useState({
     groupName: "",
     groupTag: "",
@@ -39,14 +41,13 @@ const CreateGroupCard = (props) => {
 
   const createGroupHandler = async () => {
     try {
-      dispatch(
-        fetchCreateGroup({
-          name: groupForm.groupName,
-          tag: groupForm.groupTag,
-          members: groupMembers.map((elem) => elem._id),
-          importedGroups: importedGroups.map((elem) => elem.tag),
-        })
-      );
+      const res = await request("/api/creater/createGroup", "POST", {
+        name: groupForm.groupName,
+        tag: groupForm.groupTag,
+        members: groupMembers.map((elem) => elem._id),
+        importedGroups: importedGroups.map((elem) => elem.tag),
+      });
+      dispatch(addGroup(res));
     } catch (e) {}
   };
 

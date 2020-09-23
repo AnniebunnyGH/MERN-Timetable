@@ -1,17 +1,17 @@
 import { auth as initState } from "../initialState";
-import { SET_AUTH, LOGOUT } from "../types";
+import { auth as authActionTypes } from "../types";
 
 const storageName = "userData";
 
 export const auth = (state = initState, action) => {
   switch (action.type) {
-    case SET_AUTH:
+    case authActionTypes.SET_AUTH:
       localStorage.setItem(
         storageName,
         JSON.stringify({ ...state, ...action.payload })
       );
       return { ...state, ...action.payload, isAuth: true };
-    case LOGOUT:
+    case authActionTypes.LOGOUT:
       localStorage.removeItem(storageName);
       return { ...state, isAuth: false };
     default:

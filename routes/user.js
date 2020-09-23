@@ -16,14 +16,19 @@ router.get("/getData", async (req, res) => {
         rights: user.rights,
         groups: user.groups,
       },
-      userGroups: [],
+      userGroups: { created: [], joined: [] },
       userEvents: [],
     };
 
-    const createdGroups = (await Group.find({ creator: user._id })) || [];
+    userData.userGroups.created =
+      (await Group.find({ creater: user._id })) || [];
     for (let i = 0; i < user.groups.length; i += 1) {
       const joinedGroups = await Group.findOne({ tag: user.groups[i] });
-      userData.userGroups = createdGroups.concat(joinedGroups);
+      if (joinedGroups !== null) {
+        userData.userGroups.joined = userData.userGroups.joined.concat(
+          joinedGroups
+        );
+      }
     }
 
     let events = [];

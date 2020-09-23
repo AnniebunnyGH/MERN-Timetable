@@ -10,7 +10,8 @@ import {
   TextField,
 } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import { login, logon } from "../redux/actions/auth";
+import { login} from "../redux/actions/auth";
+import { useHttp } from "../hooks/http.hook";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AuthCard() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const {loading, request, error, clearError}= useHttp();
   const model = {
     login: "log in",
     logon: "log on",
@@ -63,13 +65,14 @@ export default function AuthCard() {
 
   const registerHandler = async () => {
     try {
-      dispatch(logon({ ...authForm, ...regForm }));
+      await request("/api/auth/register","POST",{...authForm, ...regForm});
     } catch (e) {}
   };
 
   const loginHandler = async () => {
     try {
-      dispatch(login({ ...authForm }));
+      const res = await request("/api/auth/login","POST",{...authForm});
+      dispatch(login(res));
     } catch (e) {}
   };
 

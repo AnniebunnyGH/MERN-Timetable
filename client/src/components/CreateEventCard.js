@@ -11,7 +11,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Autocomplete } from "@material-ui/lab";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { fetchCreateEvent } from "../redux/actions/creater";
+import { addEvent, fetchCreateEvent } from "../redux/actions/creater";
+import { useHttp } from "../hooks/http.hook";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,6 +27,8 @@ export default function CreateEventCard() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const creater = useSelector((state) => state.creater);
+  const { loading, request, error, clearError } = useHttp();
+
   const [eventForm, setEventForm] = useState({
     eventName: "",
     eventStartTime: "10:30",
@@ -42,14 +45,13 @@ export default function CreateEventCard() {
 
   const createEventHandler = async () => {
     try {
-      dispatch(
-        fetchCreateEvent({
-          ...eventForm,
-          eventDate,
-          eventHost,
-          eventGroups: eventGroups.map((elem) => elem.tag),
-        })
-      );
+      const res = await request("/api/creater/createEvent", "POST", {
+        ...eventForm,
+        eventDate,
+        eventHost,
+        eventGroups: eventGroups.map((elem) => elem.tag),
+      });
+      dispatch(addEvent(res));
     } catch (e) {}
   };
 

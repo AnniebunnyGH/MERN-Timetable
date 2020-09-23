@@ -1,27 +1,34 @@
-import { useState, useCallback, useContext } from "react";
-import { useAuth } from "./auth.hook";
-import { AuthContext } from "../context/Auth.context";
+import { useState, useCallback } from "react";
+import { store } from "../redux/store";
 
 export const useHttp = () => {
-  const auth = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const request = useCallback(
     async (url, method = "GET", body = null, headers = {}) => {
       setLoading(true);
+
       try {
+        const state = store.getState();
+        const token = state.auth.token;
+        if (token) {
+          headers["Authorization"] = "Basic " + token;
+        }
+
         if (body) {
           body = JSON.stringify(body);
           headers["Content-Type"] = "application/json";
         }
 
         const responce = await fetch(url, { method, body, headers });
-        const data = await responce.json();
+        const res = await responce.json();
+
         if (!responce.ok) {
-          throw data;
+          throw res.message;
         }
+
         setLoading(false);
-        return data;
+        return res.data;
       } catch (e) {
         setLoading(false);
         setError(e.message);

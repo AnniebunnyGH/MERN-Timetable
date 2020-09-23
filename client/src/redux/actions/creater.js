@@ -1,69 +1,30 @@
-import {
-  SET_CREATER,
-  REQUEST_CREATER,
-  REQUEST_CREATE_EVENT,
-  REQUEST_CREATE_GROUP,
-  ADD_EVENT,
-  ADD_GROUP,
-  ADD_GROUP_CREATER,
-} from "../types";
-
-export function fetchCreaterData() {
-  return {
-    type: REQUEST_CREATER,
-    payload: {
-      url: "/api/creater/getData",
-      method: "GET",
-    },
-  };
-}
+import { creater } from "../types";
 
 export function setCreater(payload) {
   return {
-    type: SET_CREATER,
+    type: creater.SET_CREATER,
     payload,
-  };
-}
-
-export function fetchCreateEvent(payload) {
-  return {
-    type: REQUEST_CREATE_EVENT,
-    payload: {
-      url: "/api/creater/createEvent",
-      method: "POST",
-      body: payload,
-    },
   };
 }
 
 export function addEvent(payload) {
   return {
-    type: ADD_EVENT,
+    type: creater.ADD_EVENT,
     payload,
   };
 }
 
-export function fetchCreateGroup(payload) {
-  return {
-    type: REQUEST_CREATE_GROUP,
-    payload: {
-      url: "/api/creater/createGroup",
-      method: "POST",
-      body: payload,
-    },
-  };
-}
-
 export function addGroup(payload) {
+  console.log(payload);
   return {
-    type: ADD_GROUP,
+    type: creater.ADD_GROUP,
     payload,
   };
 }
 
 export function addGroupCreater(payload) {
   return {
-    type: ADD_GROUP_CREATER,
+    type: creater.ADD_GROUP_CREATER,
     payload,
   };
 }
