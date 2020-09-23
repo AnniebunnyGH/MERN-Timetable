@@ -10,19 +10,20 @@ router.get("/getData", async (req, res) => {
   try {
     const user = await checkTokin(req);
     const userData = {
-      userInfo: { fname: user.fname, sname: user.sname, rights: user.rights },
-      userGroups: {
-        created: [],
-        joined: [],
+      userInfo: {
+        fname: user.fname,
+        sname: user.sname,
+        rights: user.rights,
+        groups: user.groups,
       },
+      userGroups: [],
       userEvents: [],
     };
 
-    const groups = userData.userGroups;
-    groups.created = await Group.find({ creator: user._id });
+    const createdGroups = (await Group.find({ creator: user._id })) || [];
     for (let i = 0; i < user.groups.length; i += 1) {
       const joinedGroups = await Group.findOne({ tag: user.groups[i] });
-      groups.joined = groups.joined.concat(joinedGroups);
+      userData.userGroups = createdGroups.concat(joinedGroups);
     }
 
     let events = [];
@@ -34,7 +35,7 @@ router.get("/getData", async (req, res) => {
     events.sort((a, b) => Date.UTC(a.date) - Date.UTC(b.date));
     userData.userEvents = events;
 
-    res.json(userData);
+    res.json({ message: "Данные пользователя получены", data: userData });
   } catch (e) {
     res
       .status(400)

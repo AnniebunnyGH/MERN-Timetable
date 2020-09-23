@@ -13,5 +13,3 @@ function TimetablePage() {
 }
 
 export default TimetablePage;
-
-// <ScheduleCard></ScheduleCard>

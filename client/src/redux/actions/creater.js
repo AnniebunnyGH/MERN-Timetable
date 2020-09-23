@@ -3,6 +3,9 @@ import {
   REQUEST_CREATER,
   REQUEST_CREATE_EVENT,
   REQUEST_CREATE_GROUP,
+  ADD_EVENT,
+  ADD_GROUP,
+  ADD_GROUP_CREATER,
 } from "../types";
 
 export function fetchCreaterData() {
@@ -11,8 +14,14 @@ export function fetchCreaterData() {
     payload: {
       url: "/api/creater/getData",
       method: "GET",
-      nextAction: SET_CREATER,
     },
+  };
+}
+
+export function setCreater(payload) {
+  return {
+    type: SET_CREATER,
+    payload,
   };
 }
 
@@ -23,8 +32,14 @@ export function fetchCreateEvent(payload) {
       url: "/api/creater/createEvent",
       method: "POST",
       body: payload,
-      nextAction: null,
     },
+  };
+}
+
+export function addEvent(payload) {
+  return {
+    type: ADD_EVENT,
+    payload,
   };
 }
 
@@ -35,7 +50,20 @@ export function fetchCreateGroup(payload) {
       url: "/api/creater/createGroup",
       method: "POST",
       body: payload,
-      nextAction: null,
     },
+  };
+}
+
+export function addGroup(payload) {
+  return {
+    type: ADD_GROUP,
+    payload,
+  };
+}
+
+export function addGroupCreater(payload) {
+  return {
+    type: ADD_GROUP_CREATER,
+    payload,
   };
 }

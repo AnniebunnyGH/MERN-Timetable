@@ -97,9 +97,7 @@ const CreateGroupCard = (props) => {
               />
             )}
           />
-          <Button onClick={createGroupHandler} type="submit">
-            Create group
-          </Button>
+          <Button onClick={createGroupHandler}>Create group</Button>
         </form>
       </CardContent>
     </Card>

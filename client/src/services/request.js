@@ -19,11 +19,10 @@ export const request = async (
 
     const res = await fetch(url, { method, body, headers });
     const data = await res.json();
-
     if (!res.ok) {
       throw data; //Обработчик ошибок
     }
 
-    return data;
+    return data.data;
   } catch (e) {}
 };

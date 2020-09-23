@@ -7,7 +7,6 @@ export function login(payload) {
       url: "/api/auth/login",
       method: "POST",
       body: payload,
-      nextAction: SET_AUTH,
     },
   };
 }
