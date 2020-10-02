@@ -1,14 +1,17 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Tabs, Tab } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
+import { pages } from "../constants/pages";
 import CreateGroupCard from "../components/CreateGroupCard";
 import GroupCard from "../components/GroupCard";
+import { setPage } from "../redux/actions/app";
 
 const useStyles = makeStyles((theme) => ({}));
 
 const GroupsPage = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const groups = user.userGroups;
 
@@ -36,6 +39,10 @@ const GroupsPage = () => {
   const tabsHandler = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    dispatch(setPage(pages.groups));
+  }, []);
 
   return (
     <div>

@@ -1,28 +1,73 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Card, CardContent, CardHeader } from "@material-ui/core/";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+} from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 import EventCard from "./EventCard";
+import { calcMinutes } from "../services/timeConverting";
+import { Background } from "./scheduleComponents/Background";
+
+export const styleConst = {
+  labelWidth: "50px",
+};
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
-  cardContent: {
-    width: "1000px",
-    height: "800px",
+  root: {
+    width: "800px",
+    height: "500px",
     position: "relative",
+  },
+  cardContent: {
+    Width: "90%",
+    height: "80%",
+    position: "relative",
+  },
+  eventsHeader: {
+    width: "100%",
+    height: "20px",
+    display: "flex",
+    alignItems: "center",
+    "& .gmtLabel": { width: styleConst.labelWidth },
+    "& .list": {
+      width: `calc(100% - ${styleConst.labelWidth})`,
+      display: "flex",
+      justifyContent: "space-around",
+    },
+  },
+  eventsContent: {
+    width: "100%",
+    height: "100%",
+    position: "relative",
+    overflow: "scroll",
+  },
+  content: {
+    width: `calc(100% - ${styleConst.labelWidth})`,
+    height: "100%",
+    position: "relative",
+    zIndex: "10",
+    left: styleConst.labelWidth,
   },
 }));
 
 export default function ScheduleCard(date1) {
   const classes = useStyles();
   const user = useSelector((state) => state.user);
+  let startTime = 0;
+  let endTime = 1440;
+  let dayEventComponents = [];
 
   /*let date = new Date();
   date = date.toISOString().slice(0, 10)
   */
   const date = "2020-09-09";
-  console.log(user.userEvents);
-  let dayEventComponents = [];
+
   if (user.userEvents[0]) {
     const dayEvents = user.userEvents.filter((elem) => {
       if (elem.date) {
@@ -34,8 +79,8 @@ export default function ScheduleCard(date1) {
     const sortedEvents = res.arr;
     const maxLevel = res.level;
 
-    const startTime = calcMinutes(res.start);
-    const endTime = calcMinutes("24:00");
+    startTime = calcMinutes(res.start);
+    endTime = calcMinutes("24:00");
     const minutesWidth = endTime - startTime;
     const percentPerMinute = 100 / minutesWidth;
 
@@ -44,19 +89,13 @@ export default function ScheduleCard(date1) {
     dayEventComponents = sortedEvents.map((event, index) => (
       <EventCard
         event={event}
-        width={cardWidth + "%"}
-        height={percentPerMinute * calcMinutes(event.duration) + "%"}
-        left={cardWidth * event.level + "%"}
-        top={percentPerMinute * (calcMinutes(event.start) - startTime) + "%"}
+        width={cardWidth} //%
+        height={percentPerMinute * calcMinutes(event.duration)} //%
+        left={cardWidth * event.level} //%
+        top={percentPerMinute * (calcMinutes(event.start) - startTime)} //%
         key={index}
       ></EventCard>
     ));
-  }
-
-  function calcMinutes(time) {
-    // '10:30'
-    const t = time.split(":");
-    return +t[0] * 60 + +t[1];
   }
 
   function sortEvents(dayEvents) {
@@ -116,15 +155,43 @@ export default function ScheduleCard(date1) {
     return {
       arr: res,
       level: eventLevelArr.length - 1,
-      start: erliestEventTime,
+      start: erliestEventTime.slice(0, 2) + ":00",
     };
   }
 
   return (
     <Card className={classes.root}>
       <CardHeader title={user.userInfo.fname + user.userInfo.sname} />
+
       <CardContent className={classes.cardContent}>
-        {dayEventComponents}
+        <div className={classes.eventsHeader}>
+          <div className="gmtLabel">GMT</div>
+          <Divider orientation="vertical"></Divider>
+          <List className="list">
+            <ListItem>
+              <ListItemText primary="1" />
+            </ListItem>
+            <Divider orientation="vertical" />
+            <ListItem>
+              <ListItemText primary="2" />
+            </ListItem>
+            <Divider orientation="vertical"></Divider>
+            <ListItem>
+              <ListItemText primary="3" />
+            </ListItem>
+            <Divider orientation="vertical"></Divider>
+            <ListItem>
+              <ListItemText primary="4" />
+            </ListItem>
+            <Divider orientation="vertical"></Divider>
+          </List>
+        </div>
+
+        <Divider />
+        <div className={classes.eventsContent}>
+          <Background startTime={startTime} endTime={endTime}></Background>
+          <div className={classes.content}>{dayEventComponents}</div>
+        </div>
       </CardContent>
     </Card>
   );

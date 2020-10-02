@@ -3,7 +3,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useRoutes } from "./routes";
 import { Navbar } from "./components/Navbar";
-
 import { setUser } from "./redux/actions/user";
 import { setCreater } from "./redux/actions/creater";
 import { login, logout } from "./redux/actions/auth";
@@ -41,7 +40,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <div className="container">{routes}</div>
+      <div>{routes}</div>
     </Router>
   );
 }
